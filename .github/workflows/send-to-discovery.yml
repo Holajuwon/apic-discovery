@@ -3,7 +3,7 @@ name: Send Discovered API to ApiConnect
 on: [pull_request, workflow_dispatch, push]
 
 env:
-  API_HOST: eu-west-a.apiconnect.automation.ibm.com
+  API_HOST: platform-api.eu-west-a.apiconnect.automation.ibm.com
   # PLATFORM_API_PREFIX: platform-api
   PROVIDER_ORG: api-connect
   API_FILES: APIfolder/petstore_api.yaml
