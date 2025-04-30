@@ -7,6 +7,7 @@ env:
   PLATFORM_API_PREFIX: platform-api
   PROVIDER_ORG: api-connect
   API_FILES: APIfolder/petstore_api.yaml
+  INSECURE_SKIP_TLS_VERIFY: True
 
 jobs:
   check_changes_job:
