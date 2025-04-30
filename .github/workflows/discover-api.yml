@@ -6,7 +6,7 @@ env:
   API_HOST: eu-west-a.apiconnect.automation.ibm.com
   PLATFORM_API_PREFIX: platform-api
   PROVIDER_ORG: api-connect
-  API_FOLDERS: APIfolder/petstore_api.yaml
+  API_FILES: APIfolder/petstore_api.yaml
 
 jobs:
   check_changes_job:
