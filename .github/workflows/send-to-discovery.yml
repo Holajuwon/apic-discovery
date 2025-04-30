@@ -6,8 +6,8 @@ env:
   API_HOST: eu-west-a.apiconnect.automation.ibm.com
   PLATFORM_API_PREFIX: platform-api
   PROVIDER_ORG: api-connect
-  API_FILES: petstore_api.yaml
-  # API_FOLDERS: APIfolder
+  # API_FILES: petstore_api.yaml
+  API_FOLDERS: APIfolder
   # API_HOST: apps.67b1ca818535348782f05e90.ap1.techzone.ibm.com
   # # platform_api_prefix is not required to change for ApiConnect on Cloud
   # PLATFORM_API_PREFIX: apim-demo-mgmt-platform-api-tools
@@ -33,6 +33,7 @@ jobs:
         provider_org: ${{ env.PROVIDER_ORG }}
         api_key: ${{ secrets.apicApikey }}
         api_files: ${{ env.API_FILES }}
+        api_folders: ${{ env.API_FOLDERS }}
         resync_check: ${{ true }}
         git_diff: ${{ steps.difference-output.outputs.action_updates }}
     - name: Display the action-result
