@@ -1,0 +1,699 @@
+openapi: 3.0.0
+info:
+  x-ibm-annotations: true
+  x-ibm-connector-version: 2.1.6
+  x-ibm-application-name: Gmail
+  x-ibm-application-id: gmail
+  x-ibm-account-version: v2
+  version: 2.0.0
+  title: Gmail mail
+  description: The Public Gmail OpenAPI for developers use
+  x-ibm-skill-type: primitive
+  x-ibm-application-icon: /api/v2/applications/gmail/icon
+servers:
+  - url: http://localhost
+    description: Server URL is fully qualified URL of the connector service api server.
+paths:
+  /api/v2/applications/gmail/accounts/{accountName}/resources/mail:
+    parameters:
+      - $ref: '#/components/parameters/accountName'
+    post:
+      summary: Send email
+      description: Send an email message from Gmail.
+      x-ibm-nl-output-template: The email was sent.
+      operationId: create_mail
+      x-ibm-operation:
+        verb: create
+        model: mail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CREATE_mail_Request'
+      responses:
+        '201':
+          description: Successfully created a new mail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CREATE_mail_Response'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        4XX:
+          $ref: '#/components/responses/Error4XX'
+        5XX:
+          $ref: '#/components/responses/Error5XX'
+      x-ibm-visible: true
+      x-ibm-nl-intent-examples:
+        - Send email
+        - Send an email
+        - How can I help with sending email in Gmail?
+        - How can I send email in Gmail?
+        - Send a new email to your friend
+        - Initiate the email
+        - I want to send an email through my Gmail account
+        - Compose a new email
+        - How do I send email to new email addresses?
+        - Send new email to a friend or colleague?
+        - Can I send an email from a Gmail account?
+        - Can I send an email in Gmail?
+        - I want to send emails in Gmail?
+        - Send new email
+        - How can I get help with Send Email in Gmail?
+        - Initiate email
+        - How can I send email from Gmail?
+        - How can I send emails to someone in Gmail?
+        - How can I send email to gmail account?
+        - Write a new email
+        - How do I write a new email?
+        - How can I send email using Gmail?
+        - How do you send an email using Gmail?
+        - Send a new email
+        - Can you send email to a Gmail address?
+    get:
+      summary: Retrieve emails
+      description: Retrieve email messages from Gmail.
+      operationId: retrievewithwhere_mail
+      x-ibm-operation:
+        verb: retrievewithwhere
+        model: mail
+      responses:
+        '200':
+          description: Successfully retrieved the mail instances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RETRIEVEWITHWHERE_mail_Response'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        4XX:
+          $ref: '#/components/responses/Error4XX'
+        5XX:
+          $ref: '#/components/responses/Error5XX'
+      parameters:
+        - $ref: '#/components/parameters/next_page_token'
+        - $ref: '#/components/parameters/idQueryParam'
+        - $ref: '#/components/parameters/filter'
+      x-ibm-visible: false 
+      x-ibm-nl-intent-examples:
+        - Retrieve emails
+        - Can you retrieve the contents of an email?
+        - Retrieve the contents in an email
+        - Retrieve an email from a deactivated email address or other information
+        - Get the emails you sent on gmail
+        - Retrieve the contents in an email from a yahoo mail
+        - 'Retrieve an email '
+        - Can you retrieve an email?
+        - Get the email from Gmail
+        - Can you recover your emails from Gmail?
+        - How can you get a reply from a Gmail account?
+        - Get my emails from my Gmail account
+        - What are the contents of an email?
+    delete:
+      summary: Delete email
+      description: Deletes email messages
+      operationId: deletewithwhere_mail
+      x-ibm-operation:
+        verb: deletewithwhere
+        model: mail
+      responses:
+        '200':
+          description: Successful deleted mail instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DELETE_mail_Response'
+        4XX:
+          $ref: '#/components/responses/Error4XX'
+        5XX:
+          $ref: '#/components/responses/Error5XX'
+      parameters:
+        - $ref: '#/components/parameters/idQueryParam'
+        - $ref: '#/components/parameters/where_DELETE'
+      x-ibm-visible: false
+  /api/v2/applications/gmail/accounts/{accountName}/resources/mail/operations/updateWithWhere:
+    parameters:
+      - $ref: '#/components/parameters/accountName'
+      - $ref: '#/components/parameters/idQueryParam'
+      - $ref: '#/components/parameters/where_UPDATEWITHWHERE'
+    post:
+      summary: Update email labels
+      description: Updates a message's label by moving the message into or out of a label
+      operationId: updatewithwhere_mail
+      x-ibm-operation:
+        verb: updatewithwhere
+        model: mail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UPDATEWITHWHERE_mail_Request'
+      responses:
+        '200':
+          description: Successfully updated an existing mail instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UPDATEWITHWHERE_mail_Response'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        4XX:
+          $ref: '#/components/responses/Error4XX'
+        5XX:
+          $ref: '#/components/responses/Error5XX'
+      x-ibm-visible: false
+
+security:
+  - negotiateAuth: []
+
+components:
+# Basic authentication
+  securitySchemes:
+    negotiateAuth:
+      type: http
+      scheme: negotiate
+  parameters:
+    accountName:
+      name: accountName
+      in: path
+      description: Account name
+      x-ibm-title: Account name
+      required: true
+      schema:
+        type: string
+    filter:
+      name: filter
+      in: query
+      description: The [`filter`](https://loopback.io/doc/en/lb4/Where-filter.html) is a type of filter clause that consists of one or more logical conditions to match, it is a way of achieving subsetting of data based on the specified conditions
+      schema:
+        type: string
+      x-ibm-queryable-fields:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/mail/properties/id'
+      x-ibm-operators:
+        - eq
+      required: false
+    next_page_token:
+      name: next_page_token
+      in: query
+      description: token to obtain next set of records
+      required: false
+      schema:
+        type: string
+    where_UPDATEWITHWHERE:
+      name: where
+      in: query
+      description: The [`where` filter](https://loopback.io/doc/en/lb4/Where-filter.html) is a type of filter clause that consists of one or more logical conditions to match, it is a way of achieving subsetting of data based on the specified conditions
+      schema:
+        type: string
+      x-ibm-queryable-fields:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/mail/properties/id'
+      required: false
+    where_DELETE:
+      name: where
+      in: query
+      description: The [`where` filter](https://loopback.io/doc/en/lb4/Where-filter.html) is a type of filter clause that consists of one or more logical conditions to match, it is a way of achieving subsetting of data based on the specified conditions
+      schema:
+        type: string
+      x-ibm-queryable-fields:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/mail/properties/id'
+      required: false
+    idQueryParam:
+      name: id
+      in: query
+      description: The message ID of an email message.
+      x-ibm-title: Message ID
+      required: false
+      schema:
+        type: string
+  schemas:
+    gmailError:
+      type: object
+      description: The Error object contains `errors` array that lists all of the errors that have occurred
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorItem'
+    ErrorItem:
+      description: Each error has * An error `code` * An error `message`, giving more description of the error that has occurred It may also have `more_info` which contains a URL pointing to more information about the error that has occurred
+      type: object
+      required:
+        - code
+        - message
+      additionalProperties: true
+      properties:
+        code:
+          description: Error Code
+          type: string
+        message:
+          description: Human readable message for this error
+          type: string
+        moreInfo:
+          description: A link to additional information for this error
+          type: string
+          format: uri
+        errorDetails:
+          description: More textual information about this error
+          type: string
+        context:
+          description: An object containing data relevant to this error, often used as 'inserts' into the message. Useful for applications that want to do further processing on the error.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SimpleType'
+    SimpleType:
+      anyOf:
+        - type: string
+        - type: number
+        - type: boolean
+    mail:
+      type: object
+      properties:
+        id:
+          title: Message ID
+          description: The message ID of an email message.
+          maxLength: 255
+          type: string
+          x-ibm-order: 20
+        userId:
+          title: User ID
+          description: The email address of the user who set up the Gmail account
+          maxLength: 255
+          default: me
+          type: string
+          x-ibm-order: 20
+        From:
+          title: From
+          description: The email address of the sender
+          maxLength: 255
+          type: string
+          x-ibm-order: 1
+        To:
+          title: To
+          description: The email addresses of one or more recipients. For multiple email addresses, use a comma as a separator.
+          maxLength: 255
+          type: string
+          x-ibm-order: 2
+        Subject:
+          title: Subject
+          description: A description that serves to summarize the email content
+          type: string
+          x-ibm-order: 5
+        Body:
+          title: Body
+          description: The body content of the email message
+          type: string
+          x-ibm-order: 6
+          x-ibm-multiline: true
+        Date:
+          title: Date
+          description: The date the email was sent
+          type: string
+          x-ibm-order: 5
+        CC:
+          title: Cc
+          description: The email addresses of the Carbon copy (Cc) recipients whom you intend to keep in the email loop. For multiple email addresses, use a comma as a separator.
+          type: string
+          x-ibm-order: 3
+        BCC:
+          title: Bcc
+          description: The email addresses of the Blind carbon copy (Bcc) recipients whom you intend to keep private. For multiple email addresses, use a comma as a separator.
+          type: string
+          x-ibm-order: 4
+        addLabels:
+          title: Add labels
+          description: The names for one or more labels to add to the message, which helps to categorize the message and organize emails in your mailbox. For example, ['CATEGORY_SOCIAL','INBOX'].
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                title: Labels
+                description: A list of labels that are applied to the message. For example, inbox, spam, trash, unread, starred, important, category personal, category social, category promotions, category updates, and category_forums.
+                type: string
+                x-ibm-order: 1
+            additionalProperties: false
+          x-ibm-order: 7
+        removeLabels:
+          title: Remove labels
+          description: The name of one or more labels to remove from the message. For example, ['CATEGORY_SOCIAL','INBOX'].
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                title: Labels
+                description: A list of the labels that are applied to the message. For example, inbox, spam, trash, unread, starred, important, category_personal, category_social, category_promotions, category_updates, and category_forums.
+                type: string
+                x-ibm-order: 1
+            additionalProperties: false
+          x-ibm-order: 8
+        threadId:
+          title: Thread ID
+          description: The ID of the thread containing the message
+          type: string
+          x-ibm-order: 9
+        labelIds:
+          title: Label IDs
+          description: A list of IDs of the labels that are applied to the message
+          type: array
+          items: {}
+          x-ibm-order: 10
+        snippet:
+          title: Snippet
+          description: A preview of the message that displays a few lines from the message's body
+          type: string
+          x-ibm-order: 11
+        historyId:
+          title: History ID
+          description: The history ID that is assigned to a message in the mailbox
+          type: string
+          x-ibm-order: 12
+        internalDate:
+          title: Internal date
+          description: The internal message creation timestamp, which determines the ordering in the Inbox in ISO 8601 UTC format, YYYY-MM-DDTHH:mm:ss.SSZ
+          type: string
+          format: date-time
+          x-ibm-order: 13
+        sizeEstimate:
+          title: Size estimate
+          description: The estimated size of the message in bytes
+          type: number
+          x-ibm-order: 14
+        payload:
+          title: Payload
+          description: The parsed email structure in the message parts
+          type: object
+          properties:
+            partId:
+              title: Part ID
+              description: The ID of the message part. This ID cannot be changed.
+              type: string
+              x-ibm-order: 1
+            mimeType:
+              title: MIME type
+              description: The Multipurpose Internet Mail Extensions (MIME) type of the message part
+              type: string
+              x-ibm-order: 2
+            filename:
+              title: File name
+              description: The file name of an attachment. Only applicable if the message has an attachment.
+              type: string
+              x-ibm-order: 3
+            headers:
+              title: Headers
+              description: The list of headers on the message part. For the top-level message part, that represents the entire message payload, it contains the standard RFC 2822 email headers such as To, From, and Subject.
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    title: Header name
+                    description: The name of the header before the separator (:). For example, 'To'.
+                    type: string
+                    x-ibm-order: 11
+                  value:
+                    title: Header value
+                    description: The value of the header after the separator (:). For example, 'username@example.com'.
+                    type: string
+                    x-ibm-order: 11
+                additionalProperties: false
+              x-ibm-order: 4
+            body:
+              title: Body
+              description: The body content of the message
+              type: object
+              properties:
+                size:
+                  title: Body size
+                  description: The size of the message part body in bytes
+                  type: string
+                  x-ibm-order: 1
+                data:
+                  title: Body data
+                  description: The data or contents of the message part body
+                  type: string
+                  x-ibm-order: 2
+              additionalProperties: false
+              x-ibm-order: 16
+            parts:
+              title: Parts
+              description: The child Multipurpose Internet Mail Extensions (MIME) message parts
+              type: array
+              items:
+                type: object
+                properties:
+                  partId:
+                    title: Part ID
+                    description: The ID of the child MIME message part
+                    type: string
+                    x-ibm-order: 1
+                  mimeType:
+                    title: MIME type
+                    description: The Multipurpose Internet Mail Extensions (MIME) type of a child MIME message part
+                    type: string
+                    x-ibm-order: 2
+                  filename:
+                    title: File name
+                    description: The file name of an attachment. Only applicable if the message has an attachment.
+                    type: string
+                    x-ibm-order: 2
+                  headers:
+                    title: Headers
+                    description: The list of headers on the child MIME message part
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          title: Header name
+                          description: The name of the header on the child MIME message part
+                          type: string
+                          x-ibm-order: 11
+                        value:
+                          title: Header value
+                          description: The value of the header on the child MIME message part
+                          type: string
+                          x-ibm-order: 11
+                      additionalProperties: false
+                    x-ibm-order: 4
+                additionalProperties: false
+              x-ibm-order: 16
+          additionalProperties: false
+          x-ibm-order: 15
+        nextPageToken:
+          title: Next page token
+          description: The page token to retrieve a specific page of results in the list. The nextPageToken value that is returned in the last record of a retrieve response can be used in the next call.
+          type: string
+          x-ibm-order: 16
+        eventId:
+          title: Event ID
+          description: The unique ID of the event
+          type: string
+          x-ibm-order: 17
+        eventType:
+          title: Event type
+          description: The type of event
+          type: string
+          x-ibm-order: 18
+        Attachments:
+          title: Attachments
+          description: One or more files to attach to the email.
+          type: array
+          items:
+            type: object
+            properties:
+              fileName:
+                title: File name
+                description: The file name, including the extension, of the attachment; for example, test.pdf, test.docx, or test.txt
+                type: string
+                x-ibm-order: 1
+              content:
+                title: Content
+                description: The content of the file attachment. If the content type is binary, specify the content in Base64-encoded format.
+                type: string
+                x-ibm-order: 2
+                x-ibm-content:
+                  value: Binary
+            additionalProperties: false
+          x-ibm-order: 19
+      x-ibm-primarykey:
+        - id
+    CREATE_mail_Request:
+      type: object
+      properties:
+        To:
+          $ref: '#/components/schemas/mail/properties/To'
+        Subject:
+          $ref: '#/components/schemas/mail/properties/Subject'
+        Body:
+          $ref: '#/components/schemas/mail/properties/Body'
+        CC:
+          $ref: '#/components/schemas/mail/properties/CC'
+        BCC:
+          $ref: '#/components/schemas/mail/properties/BCC'
+        Attachments:
+          $ref: '#/components/schemas/mail/properties/Attachments'
+      x-ibm-parameter-wrapper: true
+      x-ibm-important:
+        - To
+        - CC
+        - BCC
+        - Subject
+        - Body
+    CREATE_mail_Response:
+      type: object
+      x-ibm-parameter-wrapper: true
+      properties:
+        id:
+          $ref: '#/components/schemas/mail/properties/id'
+      x-ibm-primarykey:
+        $ref: '#/components/schemas/mail/x-ibm-primarykey'
+    RETRIEVEWITHWHERE_mail_Response:
+      type: object
+      x-ibm-parameter-wrapper: true
+      properties:
+        next:
+          type: object
+          properties:
+            next_page_token:
+              type: string
+              description: For token-based pagination, the token to retrieve the next page
+        instances:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/mail/properties/id'
+              threadId:
+                $ref: '#/components/schemas/mail/properties/threadId'
+              labelIds:
+                $ref: '#/components/schemas/mail/properties/labelIds'
+              snippet:
+                $ref: '#/components/schemas/mail/properties/snippet'
+              historyId:
+                $ref: '#/components/schemas/mail/properties/historyId'
+              internalDate:
+                $ref: '#/components/schemas/mail/properties/internalDate'
+              sizeEstimate:
+                $ref: '#/components/schemas/mail/properties/sizeEstimate'
+              payload:
+                $ref: '#/components/schemas/mail/properties/payload'
+      x-ibm-primarykey:
+        $ref: '#/components/schemas/mail/x-ibm-primarykey'
+    UPDATEWITHWHERE_mail_Request:
+      type: object
+      properties:
+        addLabels:
+          $ref: '#/components/schemas/mail/properties/addLabels'
+        removeLabels:
+          $ref: '#/components/schemas/mail/properties/removeLabels'
+      x-ibm-parameter-wrapper: true
+    UPDATEWITHWHERE_mail_Response:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/mail/properties/id'
+        userId:
+          $ref: '#/components/schemas/mail/properties/userId'
+        From:
+          $ref: '#/components/schemas/mail/properties/From'
+        To:
+          $ref: '#/components/schemas/mail/properties/To'
+        Subject:
+          $ref: '#/components/schemas/mail/properties/Subject'
+        Body:
+          $ref: '#/components/schemas/mail/properties/Body'
+        Date:
+          $ref: '#/components/schemas/mail/properties/Date'
+        CC:
+          $ref: '#/components/schemas/mail/properties/CC'
+        BCC:
+          $ref: '#/components/schemas/mail/properties/BCC'
+        addLabels:
+          $ref: '#/components/schemas/mail/properties/addLabels'
+        removeLabels:
+          $ref: '#/components/schemas/mail/properties/removeLabels'
+        threadId:
+          $ref: '#/components/schemas/mail/properties/threadId'
+        labelIds:
+          $ref: '#/components/schemas/mail/properties/labelIds'
+        snippet:
+          $ref: '#/components/schemas/mail/properties/snippet'
+        historyId:
+          $ref: '#/components/schemas/mail/properties/historyId'
+        internalDate:
+          $ref: '#/components/schemas/mail/properties/internalDate'
+        sizeEstimate:
+          $ref: '#/components/schemas/mail/properties/sizeEstimate'
+        payload:
+          $ref: '#/components/schemas/mail/properties/payload'
+        nextPageToken:
+          $ref: '#/components/schemas/mail/properties/nextPageToken'
+        Attachments:
+          $ref: '#/components/schemas/mail/properties/Attachments'
+      x-ibm-parameter-wrapper: true
+      x-ibm-primarykey:
+        $ref: '#/components/schemas/mail/x-ibm-primarykey'
+    DELETE_mail_Response:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/mail/properties/id'
+        threadId:
+          $ref: '#/components/schemas/mail/properties/threadId'
+      x-ibm-parameter-wrapper: true
+  responses:
+    Error400:
+      description: 'Bad request: The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/gmailError'
+    Error401:
+      description: 'Unauthorized: client request has not been completed because it lacks valid authentication credentials for the requested resource.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/gmailError'
+    Error404:
+      description: 'Client error: The server can not find the requested resource'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/gmailError'
+    Error4XX:
+      description: Client error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/gmailError'
+    Error5XX:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/gmailError'
